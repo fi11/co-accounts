@@ -1,0 +1,38 @@
+{
+  "name": "co-accounts",
+  "version": "0.0.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fi11/co-accounts.git"
+  },
+  "keywords": [
+    "koa",
+    "co",
+    "users",
+    "accounts",
+    "auth",
+    "authentication",
+    "jsonwebtoken",
+    "jwt"
+  ],
+  "bugs": {
+    "url": "https://github.com/fi11/co-accounts/issues"
+  },
+  "homepage": "https://github.com/fi11/co-accounts",
+  "author": "Pavel Silin",
+  "license": "MIT",
+  "dependencies": {
+    "jsonwebtoken": "0.2.0",
+    "bcryptjs": "0.7.12",
+    "thunkify": "~2.1.1"
+  },
+  "devDependencies": {
+    "mocha": "~1.18.2",
+    "co": "~3.0.5",
+    "chai": "~1.9.1",
+    "co-body": "0.0.1",
+    "koa": "~0.6.0",
+    "koa-router": "~3.1.3"
+  }
+}
