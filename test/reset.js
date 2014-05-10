@@ -42,24 +42,3 @@ describe('"Get reset token" method', function() {
         })();
     });
 });
-
-describe('"Set password" method', function() {
-    var store, acc;
-
-    beforeEach(function() {
-        store = {};
-        var backend = new Backend(store);
-
-        acc = accounts({ backend: backend, secretKey: 'shhh', tokenKey: 'secret' });
-    });
-
-    it('Should set new password with valid hash', function(done) {
-        co(function *(){
-            yield acc.create('admin', 'pwd', { fullName: 'Admin' });
-
-            yield acc.setPassword('admin', 'newPwd');
-
-            expect(bcrypt.compareSync('newPwd', store['admin'].hash)).to.be.true;
-        })(done);
-    });
-});

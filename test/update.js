@@ -6,66 +6,6 @@ var jwt = require('jsonwebtoken');
 
 var expect = require('chai').expect;
 
-describe('"Update profile" method', function() {
-    var store, acc;
-
-    beforeEach(function() {
-        store = {};
-        var backend = new Backend(store);
-
-        acc = accounts({ backend: backend, secretKey: 'shhh' });
-    });
-
-
-    it('Should update account profile', function(done) {
-        co(function *(){
-            yield acc.create('admin', 'pwd', { fullName: 'Admin' });
-            yield acc.updateProfile('admin', { fullName: 'New name' });
-
-            expect(store['admin'].fullName).to.be.equal('New name');
-        })(done);
-    });
-
-    it('Should throw error if attribute isn`t string, number, boolean', function(done) {
-        co(function *(){
-            yield acc.create('admin', 'pwd', { fullName: 'Admin' });
-
-            try {
-                yield acc.updateProfile('admin', { fullName: {} });
-            } catch (err) {
-                expect(err).to.be.defined;
-                done();
-            }
-        })();
-    });
-
-    it('Should throw error if one if attribute is login', function(done) {
-        co(function *(){
-            yield acc.create('admin', 'pwd', { fullName: 'Admin' });
-
-            try {
-                yield acc.updateProfile('admin', { login: 'root', fullName: 'New Name' });
-            } catch (err) {
-                expect(err).to.be.defined;
-                done();
-            }
-        })();
-    });
-
-    it('Should throw error if one if attribute is hash', function(done) {
-        co(function *(){
-            yield acc.create('admin', 'pwd', { fullName: 'Admin' });
-
-            try {
-                yield acc.updateProfile('admin', { hash: 'hAsH', fullName: 'New Name' });
-            } catch (err) {
-                expect(err).to.be.defined;
-                done();
-            }
-        })();
-    });
-});
-
 describe('"Update account by token" method', function() {
     var store, acc;
 

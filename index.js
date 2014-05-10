@@ -57,16 +57,6 @@ module.exports = function auth(options) {
             false;
     }
 
-    function *setPassword(login, pwd) {
-        var hash = yield bcryptHash(pwd, rounds);
-
-        try {
-            yield updateAccount(login, { hash: hash });
-        } catch (err) {
-            throw ERROR.UPDATE_ERROR(err);
-        }
-    }
-
     function *create(login, pwd, data) {
         var account = yield getAccount(login);
 
@@ -81,7 +71,6 @@ module.exports = function auth(options) {
         }
 
         var profile = getProfile(account);
-
         if (!profile.login) profile.login = login;
 
         var token = jwt.sign(profile, keyAuth, optionsTokenAccount);
@@ -93,24 +82,6 @@ module.exports = function auth(options) {
         var hash = yield bcryptHash(pwd, rounds);
 
         return getUpdateToken(login, 'hash', hash, expiresInMinutes || 60 * 24 * 7);
-    }
-
-    function *updateProfile(login, data) {
-        if (data.hasOwnProperty('login') || data.hasOwnProperty('roles') || data.hasOwnProperty('hash'))
-            throw ERROR.UPDATE_ATTRIBUTE_ERROR(new Error());
-
-        for (var key in data) {
-            var typeValue = typeof data[key];
-
-            if (!~['string', 'number', 'boolean'].indexOf(typeValue))
-                throw ERROR.UPDATE_ATTRIBUTE_ERROR(new Error());
-        }
-
-        try {
-            yield updateAccount(login, data);
-        } catch (err) {
-            throw ERROR.UPDATE_ERROR(err);
-        }
     }
 
     function *updateByToken(token) {
@@ -147,34 +118,12 @@ module.exports = function auth(options) {
         return token;
     }
 
-    function *updateRoles(login, roles, type) {
-        var data;
-
-        if (type === 'add')
-            data = { add: [].concat(roles) };
-        else if (type === 'remove')
-            data = { remove: [].concat(roles) };
-        else
-            data = [].concat(roles);
-
-        try {
-            yield updateAccount(login, { roles: data });
-            return true;
-        } catch (err) {
-            //TODO: debug log;
-            throw ERROR.UPDATE_ERROR(err);
-        }
-    }
-
     return {
         verify: verify,
-        setPassword: setPassword,
         create: create,
         getResetToken: getResetToken,
-        updateProfile: updateProfile,
         getUpdateToken: getUpdateToken,
         updateByToken: updateByToken,
-        updateRoles: updateRoles,
         jwtVerify: jwtVerify
     };
 };
