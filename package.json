@@ -1,7 +1,7 @@
 {
   "name": "co-accounts",
-  "version": "0.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "Simple authentication lib for Co",
   "repository": {
     "type": "git",
     "url": "https://github.com/fi11/co-accounts.git"
